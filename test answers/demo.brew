@@ -1,0 +1,9 @@
+<% for (v in names(mtcars)) { %>
+
+<% if (nchar(v) == 3) { %>
+
+## <%= v %>
+
+The mean is <%= mean(mtcars[, v]) %>
+
+<% }} %>

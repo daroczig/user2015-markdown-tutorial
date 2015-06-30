@@ -1,0 +1,92 @@
+
+There are `r nrow(mtcars)` cars in the `mtcars` dataset.
+
+----
+
+The most powerful car has `r max(mtcars$hp)` horsepower, while the lowest value is `r min(mtcars$hp)`.
+
+A brief overview on this continuous variable:
+
+```{r}
+summary(mtcars$hp)
+hist(mtcars$hp)
+```
+
+----
+
+The most heavy car is `r max(mtcars$wt)*1e3` lbs, while the lowest value is `r min(mtcars$wt)*1e3`.
+
+A brief overview on this continuous variable:
+
+```{r}
+summary(mtcars$wt)
+hist(mtcars$wt)
+```
+
+----
+
+Unfortunately, `gear` is a discrete variable, so we cannot copy-paste the above code. Anyway, the most frequent value is `r head(names(table(mtcars$gear)), 1)`.
+
+----
+
+Can we transform this document to bearing in mind the DRY principles?
+
+---
+
+But we can do a crosstable right away:
+
+```{r}
+knitr::kable(table(mtcars$gear, mtcars$am))
+```
+
+What if we try `descr::CrossTable`?
+
+----
+
+Standard deviation is very easy to compute:
+
+$\sqrt{\frac{\sum_{i=1}^N (x_i - \overline{x})^2}{N}}$
+
+1. First, you need to compute the mean: add up all numbers and divide by the number of elements. E.g.:
+
+        x <- 1:10
+        sum(x) / length(x)
+        mean(x)
+
+2. Then, compute the difference of each numbers from the mean:
+
+        x - mean(x)
+
+3. Well, we need the absolute difference (to the power of two):
+
+        (x - mean(x)) ^ 2
+
+4. Add up these numbers:
+
+        
+
+4. Divide by the number of elements:
+
+        (sum((x - mean(x)) ^ 2) / length(x)
+
+5. And the square root due to (3):
+
+        sqrt(sum((x - mean(x)) ^ 2) / length(x))
+        sqrt(sum((x - mean(x)) ^ 2) / (length(x) - 1)) ## corrected sample sd
+		
+6. Or use the built-in function:
+
+        sd(x)
+
+```{r}
+x <- mtcars$hp
+sqrt(sum((x - mean(x)) ^ 2) / (length(x) - 1))
+sd(x)
+```
+
+----
+
+```{r}
+plot(mtcars$hp, mtcars$wt)
+abline(lm(wt ~ hp, mtcars), col = 'red')
+```
