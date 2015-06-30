@@ -1,0 +1,18 @@
+<% for (v in names(mtcars)) { %>
+The mean of <%= pandoc.verbatim.return(v) %> is <%= mean(mtcars[, v]) %>
+<% } %>
+
+##
+
+<% for (v in names(mtcars)) { %>
+
+<% if (nchar(v) == 3) { %>
+
+## <%= v %>
+
+The mean is <%= mean(mtcars[, v]) %>
+
+<% }} %>
+
+##
+
